@@ -42,6 +42,14 @@ build {
   }
 
   provisioner "powershell" {
+    script = "add-web-server.ps1"
+  }
+
+  provisioner "powershell" {
+    script = "set-boot-config.ps1"
+  }
+
+  provisioner "powershell" {
     script = "sysprep.ps1"
   }
 }
