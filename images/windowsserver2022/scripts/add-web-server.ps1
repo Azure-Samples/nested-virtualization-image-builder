@@ -1,2 +1,2 @@
-Write-Host "Adding WindowsFeature Web-Server" 
+Write-Output "Adding WindowsFeature Web-Server" 
 Add-WindowsFeature Web-Server

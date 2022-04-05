@@ -47,8 +47,4 @@ Write-Host "Creating Rule for the Azure platform network"
 New-NetFirewallRule -DisplayName AzurePlatform -Direction Inbound -RemoteAddress 168.63.129.16 -Profile Any -Action Allow -EdgeTraversalPolicy Allow
 New-NetFirewallRule -DisplayName AzurePlatform -Direction Outbound -RemoteAddress 168.63.129.16 -Profile Any -Action Allow
 
-
-Write-Host "Adding WindowsFeature Web-Server" 
-Add-WindowsFeature Web-Server
-
-Write-Host "Done: setup.ps1" 
+Write-Output "Done: setup.ps1" 

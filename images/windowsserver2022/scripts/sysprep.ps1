@@ -1,8 +1,8 @@
-# TODO: remove this  
+ $ProgressPreference = "SilentlyContinue"
 while($true)
 {
     $service = Get-Service RdAgent -ErrorAction SilentlyContinue
-    if ( $service -eq $null ) { 
+    if ( $null -eq $service ) { 
 	Write-Host "RdAgent is  NOT available"
     	Start-Process "C:\Windows\OEM\GuestAgent\VMAgentMSI.msi" /quiet
     	Start-Sleep -s 30 
@@ -22,7 +22,7 @@ Write-Output '>>> Sysprepping VM ...'
 if( Test-Path $Env:SystemRoot\system32\Sysprep\unattend.xml ) {
     Remove-Item $Env:SystemRoot\system32\Sysprep\unattend.xml -Force
 }
-& $Env:SystemRoot\System32\Sysprep\Sysprep.exe /oobe /generalize /quiet /quit
+& $Env:SystemRoot\System32\Sysprep\Sysprep.exe /oobe /generalize /quiet /quit /mode:vm
 while($true) {
     $imageState = (Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\State).ImageState
     Write-Output $imageState
@@ -30,3 +30,6 @@ while($true) {
     Start-Sleep -s 5
 }
 Write-Output '>>> Sysprep complete ...'
+Write-Output '>>> Shutting down ...'
+
+shutdown /s /t 10 /f /d p:4:1 /c "Packer Shutdown"

@@ -14,7 +14,7 @@ source "hyperv-iso" "windows-server-2022" {
     winrm_insecure = true
     winrm_timeout = "4h"
     shutdown_timeout = "30m"
-    shutdown_command = "shutdown /s /t 5 /f /d p:4:1 /c \"Packer Shutdown\""
+    disable_shutdown = true 
     skip_compaction = true
     switch_name = "VmNAT"
     generation = 1
@@ -26,12 +26,13 @@ build {
   sources = ["sources.hyperv-iso.windows-server-2022"]
 
   provisioner "powershell" {
+    script = "scripts/win-updates.ps1"
+  }
+  
+  provisioner "powershell" {
     script = "scripts/setup.ps1"
   }
 
-  provisioner "powershell" {
-    script = "scripts/win-updates.ps1"
-  }
 
   provisioner "windows-restart" {
     restart_timeout = "30m"
