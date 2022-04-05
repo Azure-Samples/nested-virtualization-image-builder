@@ -26,11 +26,11 @@ build {
   sources = ["sources.hyperv-iso.windows-server-2022"]
 
   provisioner "powershell" {
-    script = "setup.ps1"
+    script = "scripts/setup.ps1"
   }
 
   provisioner "powershell" {
-    script = "win-updates.ps1"
+    script = "scripts/win-updates.ps1"
   }
 
   provisioner "windows-restart" {
@@ -38,34 +38,22 @@ build {
   }
 
   provisioner "powershell" {
-    script = "install-vm-agent.ps1"
+    script = "scripts/install-vm-agent.ps1"
   }
 
   provisioner "powershell" {
-    script = "add-web-server.ps1"
-  }
-
-  provisioner "windows-shell" {
-    inline = [
-      "bcdedit.exe /set '{bootmgr}' integrityservices enable",
-      "bcdedit.exe /set '{default}' device partition=C:",
-      "bcdedit.exe /set '{default}' integrityservices enable",
-      "bcdedit.exe /set '{default}' recoveryenabled Off",
-      "bcdedit.exe /set '{default}' osdevice partition=C:",
-      "bcdedit.exe /set '{default}' bootstatuspolicy IgnoreAllFailures",
-      "bcdedit.exe /set '{bootmgr}' displaybootmenu yes",
-      "bcdedit.exe /set '{bootmgr}' timeout 5",
-      "bcdedit.exe /set '{bootmgr}' bootems yes",
-      "bcdedit.exe /ems '{current}' ON",
-      "bcdedit.exe /emssettings EMSPORT:1 EMSBAUDRATE:115200"
-    ]
+    script = "scripts/add-web-server.ps1"
   }
 
   provisioner "powershell" {
-    script = "os-crash.ps1"
+    script = "scripts/set-boot-config.ps1"
   }
 
   provisioner "powershell" {
-    script = "sysprep.ps1"
+    script = "scripts/os-crash.ps1"
+  }
+
+  provisioner "powershell" {
+    script = "scripts/sysprep.ps1"
   }
 }
