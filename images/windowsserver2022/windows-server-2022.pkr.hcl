@@ -46,7 +46,7 @@ build {
   }
 
   provisioner "powershell" {
-    script = "scripts/set-boot-config.ps1"
+    script = "scripts/set-boot-config.cmd"
   }
 
   provisioner "powershell" {
