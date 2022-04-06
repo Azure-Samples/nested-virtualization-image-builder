@@ -3,16 +3,16 @@
 # XML data to the Packer output.
 $ProgressPreference = "SilentlyContinue"
 
-Write-Output "***** Starting PSWindowsUpdate Installation"
+Write-Output "Starting PSWindowsUpdate Installation"
 
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 Install-Module -Name PSWindowsUpdate -Force
 
 if (Get-ChildItem "C:\Program Files\WindowsPowerShell\Modules\PSWindowsUpdate") {
-    Write-Output "***** PSWindowsUpdate installed successfully"
+    Write-Output "PSWindowsUpdate installed successfully"
 }
 
-Write-Output "***** Starting Windows Update Installation"
+Write-Output "Windows Update Installation"
 
 Try
 {
@@ -20,7 +20,7 @@ Try
 }
 Catch
 {
-    Write-Error "***** Unable to Import PSWindowsUpdate"
+    Write-Error "Unable to install PSWindowsUpdate"
     exit 1
 }
 
