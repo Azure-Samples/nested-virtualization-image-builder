@@ -33,7 +33,6 @@ build {
     script = "scripts/setup.ps1"
   }
 
-
   provisioner "windows-restart" {
     restart_timeout = "30m"
   }
