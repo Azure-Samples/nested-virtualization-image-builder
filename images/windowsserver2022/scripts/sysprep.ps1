@@ -4,7 +4,7 @@ while($true)
     $service = Get-Service RdAgent -ErrorAction SilentlyContinue
     if ( $null -eq $service ) { 
 	Write-Host "RdAgent is  NOT available"
-    	Start-Process "C:\Windows\OEM\GuestAgent\VMAgentMSI.msi" /quiet
+    	Start-Process "C:\Windows\OEM\GuestAgent\WindowsAzureVmAgent.fre.msi" /quiet
     	Start-Sleep -s 30 
     } else {
 	Write-Host "RdAgent is available"
