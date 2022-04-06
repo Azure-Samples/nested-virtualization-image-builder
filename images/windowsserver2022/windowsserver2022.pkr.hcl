@@ -50,7 +50,7 @@ build {
   }
 
   provisioner "powershell" {
-    script = "scripts/os-crash.ps1"
+    script = "scripts/collect-crash-events.ps1"
   }
 
   provisioner "powershell" {

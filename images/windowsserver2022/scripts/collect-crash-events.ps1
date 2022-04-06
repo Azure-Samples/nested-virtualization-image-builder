@@ -10,3 +10,5 @@ New-ItemProperty -Path $key -Name DumpFolder -Type ExpandString -Force -Value 'C
 New-ItemProperty -Path $key -Name CrashCount -Type DWord -Force -Value 10
 New-ItemProperty -Path $key -Name DumpType -Type DWord -Force -Value 2
 Set-Service -Name WerSvc -StartupType Manual
+
+Write-Output "Done: collect-crash-events.ps1"

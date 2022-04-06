@@ -12,7 +12,7 @@ if (Get-ChildItem "C:\Program Files\WindowsPowerShell\Modules\PSWindowsUpdate") 
     Write-Output "PSWindowsUpdate installed successfully"
 }
 
-Write-Output "Windows Update Installation"
+Write-Output "Starting Windows Update Installation"
 
 Try
 {
@@ -20,7 +20,7 @@ Try
 }
 Catch
 {
-    Write-Error "Unable to install PSWindowsUpdate"
+    Write-Error "Unable to Import PSWindowsUpdate"
     exit 1
 }
 
@@ -57,27 +57,27 @@ try {
     $RootFolder.RegisterTaskDefinition($TaskName, $Task, 6, "SYSTEM", $Null, 1) | Out-Null
     $RootFolder.GetTask($TaskName).Run(0) | Out-Null
 
-    Write-Output "***** The Windows Update log will be displayed below this message. No additional output indicates no updates were needed."
+    Write-Output "The Windows Update log will be displayed below this message. No additional output indicates no updates were needed."
     do {
         sleep 1
-        if ((Test-Path C:\Windows\Temp\PSWindowsUpdate.log) -and $null -eq $script:reader) {
+        if ((Test-Path C:\Windows\Temp\PSWindowsUpdate.log) -and $script:reader -eq $null) {
             $script:stream = New-Object System.IO.FileStream -ArgumentList "C:\Windows\Temp\PSWindowsUpdate.log", "Open", "Read", "ReadWrite"
             $script:reader = New-Object System.IO.StreamReader $stream
         }
-        if ($null -ne $script:reader) {
+        if ($script:reader -ne $null) {
             $line = $Null
             do {$script:reader.ReadLine()
                 $line = $script:reader.ReadLine()
                 Write-Output $line
-            } while ($null -ne $line)
+            } while ($line -ne $null)
         }
     } while ($Scheduler.GetRunningTasks(0) | Where-Object {$_.Name -eq $TaskName})
 } finally {
     $RootFolder.DeleteTask($TaskName,0)
     [System.Runtime.Interopservices.Marshal]::ReleaseComObject($Scheduler) | Out-Null
-    if ($null -ne $script:reader) {
+    if ($script:reader -ne $null) {
         $script:reader.Close()
         $script:stream.Dispose()
     }
 }
-Write-Output "***** Ended Windows Update Installation"
+Write-Output "Done: win-updates.ps1"
