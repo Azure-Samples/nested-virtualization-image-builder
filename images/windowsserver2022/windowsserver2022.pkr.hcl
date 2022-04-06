@@ -26,14 +26,10 @@ build {
   sources = ["sources.hyperv-iso.windows-server-2022"]
   
   provisioner "powershell" {
-    script = "scripts/setup.ps1"
-  }
-
-  provisioner "powershell" {
-    script = "scripts/add-web-server.ps1"
-  }
-
-  provisioner "powershell" {
-    script = "scripts/sysprep.ps1"
+    scripts = [
+      "scripts/setup.ps1",
+      "scripts/add-web-server.ps1",
+      "scripts/sysprep.ps1"
+    ]
   }
 }
