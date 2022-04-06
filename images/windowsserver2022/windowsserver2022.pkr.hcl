@@ -6,7 +6,7 @@ source "hyperv-iso" "windows-server-2022" {
     vm_name = "packer-win2022"
     boot_wait = "5s"
     disk_size = "10240"
-    headless = false
+    headless = true
     winrm_password = "packer"
     winrm_username = "Administrator"
     communicator = "winrm"
@@ -24,33 +24,13 @@ source "hyperv-iso" "windows-server-2022" {
 
 build {
   sources = ["sources.hyperv-iso.windows-server-2022"]
-
-  provisioner "powershell" {
-    script = "scripts/win-updates.ps1"
-  }
   
   provisioner "powershell" {
     script = "scripts/setup.ps1"
   }
 
-  provisioner "windows-restart" {
-    restart_timeout = "30m"
-  }
-
-  provisioner "powershell" {
-    script = "scripts/install-vm-agent.ps1"
-  }
-
   provisioner "powershell" {
     script = "scripts/add-web-server.ps1"
-  }
-
-  provisioner "powershell" {
-    script = "scripts/set-boot-config.cmd"
-  }
-
-  provisioner "powershell" {
-    script = "scripts/collect-crash-events.ps1"
   }
 
   provisioner "powershell" {
