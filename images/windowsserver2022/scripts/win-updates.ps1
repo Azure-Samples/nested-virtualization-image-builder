@@ -3,52 +3,33 @@
 # XML data to the Packer output.
 $ProgressPreference = "SilentlyContinue"
 
-Write-Output "Starting PSWindowsUpdate Installation"
-# Install PSWindowsUpdate for scriptable Windows Updates
-$webDeployURL = "https://gallery.technet.microsoft.com/scriptcenter/2d191bcd-3308-4edd-9de2-88dff796b0bc/file/66095/1/PSWindowsUpdate_1.4.5.zip"
-$filePath = "$($env:TEMP)\PSWindowsUpdate.zip"
+Write-Output "***** Starting PSWindowsUpdate Installation"
 
-(New-Object System.Net.WebClient).DownloadFile($webDeployURL, $filePath)
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+Install-Module -Name PSWindowsUpdate -Force
 
-# Older versions of Powershell do not have 'Expand Archive'
-# Use Shell.Application custom object to unzip
-# https://stackoverflow.com/questions/27768303/how-to-unzip-a-file-in-powershell
-$shell = New-Object -ComObject Shell.Application
-$zipFile = $shell.NameSpace($filePath)
-$destinationFolder = $shell.NameSpace("C:\Program Files\WindowsPowerShell\Modules")
+if (Get-ChildItem "C:\Program Files\WindowsPowerShell\Modules\PSWindowsUpdate") {
+    Write-Output "***** PSWindowsUpdate installed successfully"
+}
 
-$copyFlags = 0x00
-$copyFlags += 0x04 # Hide progress dialogs
-$copyFlags += 0x10 # Overwrite existing files
+Write-Output "***** Starting Windows Update Installation"
 
-$destinationFolder.CopyHere($zipFile.Items(), $copyFlags)
-# Clean up
-Remove-Item -Force -Path $filePath
-
-Write-Output "Ended PSWindowsUpdate Installation"
-
-Write-Output "Starting Windows Update Installation"
-
-Try 
+Try
 {
     Import-Module PSWindowsUpdate -ErrorAction Stop
 }
 Catch
 {
-    Write-Error "Unable to install PSWindowsUpdate"
+    Write-Error "***** Unable to Import PSWindowsUpdate"
     exit 1
 }
 
 if (Test-Path C:\Windows\Temp\PSWindowsUpdate.log) {
-    # Save old logs
-    # Rename-Item -Path C:\Windows\Temp\PSWindowsUpdate.log -NewName PSWindowsUpdate-$((Get-Date).Ticks).log
-
-    # Uncomment the line below to delete old logs instead
     Remove-Item -Path C:\Windows\Temp\PSWindowsUpdate.log
 }
 
 try {
-    $updateCommand = {ipmo PSWindowsUpdate; Get-WUInstall -AcceptAll -IgnoreReboot | Out-File C:\Windows\Temp\PSWindowsUpdate.log}
+    $updateCommand = {Import-Module PSWindowsUpdate; Get-WUInstall -AcceptAll -Install -IgnoreReboot | Out-File C:\Windows\Temp\PSWindowsUpdate.log}
     $TaskName = "PackerUpdate"
 
     $User = [Security.Principal.WindowsIdentity]::GetCurrent()
@@ -76,27 +57,27 @@ try {
     $RootFolder.RegisterTaskDefinition($TaskName, $Task, 6, "SYSTEM", $Null, 1) | Out-Null
     $RootFolder.GetTask($TaskName).Run(0) | Out-Null
 
-    Write-Output "The Windows Update log will be displayed below this message. No additional output indicates no updates were needed."
+    Write-Output "***** The Windows Update log will be displayed below this message. No additional output indicates no updates were needed."
     do {
-		sleep 1
-		if ((Test-Path C:\Windows\Temp\PSWindowsUpdate.log) -and $null -eq $script:reader) {
-			$script:stream = New-Object System.IO.FileStream -ArgumentList "C:\Windows\Temp\PSWindowsUpdate.log", "Open", "Read", "ReadWrite"
-			$script:reader = New-Object System.IO.StreamReader $stream
-		}
-		if ($null -ne $script:reader) {
-			$line = $Null
-			do {$script:reader.ReadLine()
-				$line = $script:reader.ReadLine()
-				Write-Output $line
-			} while ($null -ne $line)
-		}
-	} while ($Scheduler.GetRunningTasks(0) | Where-Object {$_.Name -eq $TaskName})
+        sleep 1
+        if ((Test-Path C:\Windows\Temp\PSWindowsUpdate.log) -and $null -eq $script:reader) {
+            $script:stream = New-Object System.IO.FileStream -ArgumentList "C:\Windows\Temp\PSWindowsUpdate.log", "Open", "Read", "ReadWrite"
+            $script:reader = New-Object System.IO.StreamReader $stream
+        }
+        if ($null -ne $script:reader) {
+            $line = $Null
+            do {$script:reader.ReadLine()
+                $line = $script:reader.ReadLine()
+                Write-Output $line
+            } while ($null -ne $line)
+        }
+    } while ($Scheduler.GetRunningTasks(0) | Where-Object {$_.Name -eq $TaskName})
 } finally {
     $RootFolder.DeleteTask($TaskName,0)
     [System.Runtime.Interopservices.Marshal]::ReleaseComObject($Scheduler) | Out-Null
-	if ($null -ne $script:reader) {
-		$script:reader.Close()
-		$script:stream.Dispose()
-	}
+    if ($null -ne $script:reader) {
+        $script:reader.Close()
+        $script:stream.Dispose()
+    }
 }
-Write-Output "Ended Windows Update Installation"
+Write-Output "***** Ended Windows Update Installation"
