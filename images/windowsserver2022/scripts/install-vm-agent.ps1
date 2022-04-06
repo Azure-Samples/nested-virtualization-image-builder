@@ -1,7 +1,3 @@
-# mkdir "C:\Windows\OEM\GuestAgent"
-# wget "https://go.microsoft.com/fwlink/?linkid=394789&clcid=0x409" -UseBasicParsing -Outfile "C:\Windows\OEM\GuestAgent\VMAgentMSI.msi"
-# Start-Process "C:\Windows\OEM\GuestAgent\VMAgentMSI.msi" /quiet
-
 mkdir "C:\Windows\OEM\GuestAgent"
 wget "https://github.com/Azure/WindowsVMAgent/releases/download/2.7.41491.1044/WindowsAzureVmAgent.2.7.41491.1044_2201181044.fre.msi" -UseBasicParsing -Outfile "C:\Windows\OEM\GuestAgent\WindowsAzureVmAgent.2.7.41491.1044_2201181044.fre.msi"
 Start-Process "C:\Windows\OEM\GuestAgent\WindowsAzureVmAgent.2.7.41491.1044_2201181044.fre.msi" /quiet
