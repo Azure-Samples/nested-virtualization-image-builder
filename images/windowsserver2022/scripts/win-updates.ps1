@@ -3,16 +3,16 @@
 # XML data to the Packer output.
 $ProgressPreference = "SilentlyContinue"
 
-Write-Output "Starting PSWindowsUpdate Installation"
+Write-Output "***** Starting PSWindowsUpdate Installation"
 
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 Install-Module -Name PSWindowsUpdate -Force
 
 if (Get-ChildItem "C:\Program Files\WindowsPowerShell\Modules\PSWindowsUpdate") {
-    Write-Output "PSWindowsUpdate installed successfully"
+    Write-Output "***** PSWindowsUpdate installed successfully"
 }
 
-Write-Output "Starting Windows Update Installation"
+Write-Output "***** Starting Windows Update Installation"
 
 Try
 {
@@ -20,7 +20,7 @@ Try
 }
 Catch
 {
-    Write-Error "Unable to Import PSWindowsUpdate"
+    Write-Error "***** Unable to Import PSWindowsUpdate"
     exit 1
 }
 
@@ -57,7 +57,7 @@ try {
     $RootFolder.RegisterTaskDefinition($TaskName, $Task, 6, "SYSTEM", $Null, 1) | Out-Null
     $RootFolder.GetTask($TaskName).Run(0) | Out-Null
 
-    Write-Output "The Windows Update log will be displayed below this message. No additional output indicates no updates were needed."
+    Write-Output "***** The Windows Update log will be displayed below this message. No additional output indicates no updates were needed."
     do {
         sleep 1
         if ((Test-Path C:\Windows\Temp\PSWindowsUpdate.log) -and $script:reader -eq $null) {
@@ -80,4 +80,4 @@ try {
         $script:stream.Dispose()
     }
 }
-Write-Output "Done: win-updates.ps1"
+Write-Output "***** Ended Windows Update Installation"
