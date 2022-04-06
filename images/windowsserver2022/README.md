@@ -61,3 +61,12 @@ You should see a web page of the following:
 az group delete -n builder
 az group delete -n sample-images
 ```
+
+
+## Resources
+
+- [Answer Files](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs?view=windows-11)
+- [Unattend Reference](https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/)
+- [Unattend Components](https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/components-b-unattend)
+- [Packer - Hyper-V from ISO](https://www.packer.io/plugins/builders/hyperv/iso)
+- [Packer - autounattend Windows](https://www.packer.io/guides/automatic-operating-system-installs/autounattend_windows)
