@@ -1,6 +1,6 @@
 # Windows 2022 Server Overview
 
-Installing a Windows Operating System from a mounted iso as part of your Packer build requires an answer file. 
+Installing a Windows operating system from a mounted ISO as part of your Packer build requires an answer file. 
 
 For more information on how to create and customize an answer file, see [answer files](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs?view=windows-11) and [unattend](https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/) docs.
 
