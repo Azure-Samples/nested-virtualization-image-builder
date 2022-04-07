@@ -1,10 +1,12 @@
 # Windows 2022 Server Overview
 
-Installing a Windows Operating System from a mounted iso as part of your Packer build requires an answer file.
+Installing a Windows Operating System from a mounted iso as part of your Packer build requires an answer file. 
 
 For more information on how to create and customize an answer file, see [answer files](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs?view=windows-11) and [unattend](https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/) docs.
 
-After the OS install, PowerShell provisioner scripts generalize and configure the vhd for upload to Azure. In addition, a web server is started on port 80 and can be used to verify the VM is running and accessible. 
+In addition to the OS install, WinRM is enabled and is used as the  Communicator for Packer.
+
+PowerShell provisioner scripts generalize and configure the vhd for upload to Azure. In addition, a web server is started on port 80 and can be used to verify the VM is running and accessible. 
 
 ## Usage
 
@@ -78,3 +80,4 @@ az group delete -n sample-vms
 - [Unattend Components](https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/components-b-unattend)
 - [Packer - Hyper-V from ISO](https://www.packer.io/plugins/builders/hyperv/iso)
 - [Packer - autounattend Windows](https://www.packer.io/guides/automatic-operating-system-installs/autounattend_windows)
+- [Packer - WinRM Communicator](https://www.packer.io/docs/communicators/winrm)
