@@ -63,7 +63,7 @@ az network nsg rule create \
     --destination-port-range 80
 ```
 
-It may take a few minutes for the VM to be in the running state and the NSG rule to take effect. Once the VM is running, navigate to the public IP address of the newly creted VM.
+It may take a few minutes for the VM to be in the running state and the NSG rule to take effect. Once the VM is running, navigate to the public IP address of the newly created VM.
 
 You should see a web page of the following:
 
