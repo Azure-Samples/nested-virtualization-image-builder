@@ -6,7 +6,7 @@ For more information on how to create and customize an answer file, see [answer 
 
 In addition to the OS install, WinRM is enabled and is used as the communicator for Packer.
 
-PowerShell provisioner scripts generalize and configure the vhd for upload to Azure. In addition, a web server is started on port 80 and can be used to verify the VM is running and accessible. 
+PowerShell provisioner scripts generalize and configure the VHD for upload to Azure. In addition, a web server is started on port 80 and can be used to verify the VM is running and accessible. 
 
 ## Usage
 
