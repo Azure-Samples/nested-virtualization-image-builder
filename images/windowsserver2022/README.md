@@ -23,11 +23,17 @@ git clone https://github.com/Azure-Samples/nested-virtualization-image-builder -
 cd .\nested-virtualization-image-builder\images\windowsserver2022\
 packer build .\windowsserver2022.pkr.hcl
 
-$storageAccount = az deployment group show -g builder -n storage --query 'properties.outputs.storageAccount.value' -o tsv
+# Use Managed Identity for azcopy
+azcopy login --identity
+
+# Use Managed Identity for azure-cli
+az login --identity
+
+$storageAccount = az deployment group show -g builder-josh-2 -n storage --query 'properties.outputs.storageAccount.value' -o tsv
 azcopy copy '.\output-windows-sever-2022\Virtual Hard Disks\packer-win2022.vhd' "https://$storageAccount.blob.core.windows.net/images/win2022.vhd"
 
 # Register the image
-az image create -g builder -n win2022 --os-type Windows --source https://$storageAccount.windows.net/images/win2022.vhd
+az image create -g builder-josh-2 -n win2022 --os-type Windows --source https://$storageAccount.windows.net/images/win2022.vhd
 
 ```
 
