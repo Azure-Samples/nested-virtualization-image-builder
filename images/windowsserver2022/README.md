@@ -4,7 +4,7 @@ Installing a Windows Operating System from a mounted iso as part of your Packer 
 
 For more information on how to create and customize an answer file, see [answer files](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs?view=windows-11) and [unattend](https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/) docs.
 
-In addition to the OS install, WinRM is enabled and is used as the  Communicator for Packer.
+In addition to the OS install, WinRM is enabled and is used as the Communicator for Packer.
 
 PowerShell provisioner scripts generalize and configure the vhd for upload to Azure. In addition, a web server is started on port 80 and can be used to verify the VM is running and accessible. 
 
@@ -46,8 +46,7 @@ az group create -n sample-vms -l westus3
 
 # Create the VM. Save the public IP address for the verification steps 
 IMAGE_ID=$(az image show -g builder -n win2022 --query id -o tsv)
-az vm create -n win2022 -g sample-vms --image $IMAGE_ID --generate-ssh-keys 
-
+az vm create -n win2022 -g sample-vms --image $IMAGE_ID --generate-ssh-keys --admin-password <password>
 ```
 
 ### Verify the VM Web Server
