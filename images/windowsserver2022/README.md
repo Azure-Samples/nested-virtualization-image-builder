@@ -40,13 +40,9 @@ az image create -g builder -n win2022 --os-type Windows --source https://$storag
 ### Create the VM
 
 ```shell
-
-# Create a resource group for the VM
-az group create -n sample-vms -l westus3
-
-# Create the VM. Save the public IP address for the verification steps 
-IMAGE_ID=$(az image show -g builder -n win2022 --query id -o tsv)
-az vm create -n win2022 -g sample-vms --image $IMAGE_ID --generate-ssh-keys --admin-password <password>
+# Create the VM
+$IMAGE_ID=$(az image show -g builder -n win2022 --query id -o tsv)
+az vm create -n win2022 -g builder --image $IMAGE_ID --generate-ssh-keys --admin-password <password> --nsg default
 ```
 
 ### Verify the VM Web Server
@@ -54,13 +50,9 @@ az vm create -n win2022 -g sample-vms --image $IMAGE_ID --generate-ssh-keys --ad
 Create an NSG rule to allow HTTP traffic to the newly created VM on port 80.
 
 ```shell
-az network nsg rule create \
-    --resource-group sample-vms \
-    --nsg-name win2022NSG \
-    --name port_80 \
-    --protocol tcp \
-    --priority 500 \
-    --destination-port-range 80
+# get VM public IP address
+$IP=(az vm list-ip-addresses --resource-group builder --name win2022 --query "[].virtualMachine.network.publicIpAddresses[0].ipAddress" --output tsv)]
+az network nsg rule create --resource-group builder --nsg-name default --name port_80 --protocol tcp --priority 500 --destination-port-range 80 --access Allow --destination-address-prefixes $IP
 ```
 
 It may take a few minutes for the VM to be in the running state and the NSG rule to take effect. Once the VM is running, navigate to the public IP address of the newly creted VM.
@@ -74,7 +66,6 @@ You should see a web page of the following:
 
 ```shell
 az group delete -n builder
-az group delete -n sample-vms
 ```
 
 
