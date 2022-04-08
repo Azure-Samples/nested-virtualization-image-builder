@@ -1,12 +1,12 @@
 # Windows 2022 Server Overview
 
-Installing a Windows Operating System from a mounted iso as part of your Packer build requires an answer file. 
+Installing a Windows operating system from a mounted ISO as part of your Packer build requires an answer file. 
 
 For more information on how to create and customize an answer file, see [answer files](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs?view=windows-11) and [unattend](https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/) docs.
 
-In addition to the OS install, WinRM is enabled and is used as the Communicator for Packer.
+In addition to the OS install, WinRM is enabled and is used as the communicator for Packer.
 
-PowerShell provisioner scripts generalize and configure the vhd for upload to Azure. In addition, a web server is started on port 80 and can be used to verify the VM is running and accessible. 
+PowerShell provisioner scripts generalize and configure the VHD for upload to Azure. In addition, a web server is started on port 80 and can be used to verify the VM is running and accessible. 
 
 ## Usage
 
@@ -55,7 +55,7 @@ $IP=(az vm list-ip-addresses --resource-group builder --name win2022 --query "[]
 az network nsg rule create --resource-group builder --nsg-name default --name port_80 --protocol tcp --priority 500 --destination-port-range 80 --access Allow --destination-address-prefixes $IP
 ```
 
-It may take a few minutes for the VM to be in the running state and the NSG rule to take effect. Once the VM is running, navigate to the public IP address of the newly creted VM.
+It may take a few minutes for the VM to be in the running state and the NSG rule to take effect. Once the VM is running, navigate to the public IP address of the newly created VM.
 
 You should see a web page of the following:
 
